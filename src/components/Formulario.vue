@@ -38,6 +38,7 @@
 import { computed, defineComponent } from "vue";
 import Temporizador from "./Temporizador.vue";
 import { useStore } from "vuex";
+
 import { key } from "@/store";
 
 export default defineComponent({
@@ -62,9 +63,7 @@ export default defineComponent({
       this.descricao = "";
     },
   },
-
   setup() {
-    // Alem de importar a store para usar ela, precisa passar a key para passar a chave de acesso
     const store = useStore(key);
     return {
       projetos: computed(() => store.state.projetos),

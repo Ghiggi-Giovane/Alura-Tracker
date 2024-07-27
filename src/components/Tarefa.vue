@@ -1,8 +1,11 @@
 <template>
-  <Box>
+  <Box class="textocor">
     <div class="columns">
-      <div class="column is-7">
+      <div class="column is-4">
         {{ tarefa.descricao || "Tarefa sem descrição" }}
+      </div>
+      <div class="column is-3">
+        {{ tarefa.projeto?.nome || "N/D" }}
       </div>
       <div class="column">
         <Cronometro :tempoEmSegundos="tarefa.duracaoEmSegundos" />
@@ -38,3 +41,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.textocor {
+  color: black;
+}
+</style>
