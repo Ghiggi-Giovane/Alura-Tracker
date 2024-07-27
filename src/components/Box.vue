@@ -1,6 +1,5 @@
 <template>
   <div class="box has-text-weight-bold">
-    <!--  Slot quer dizer que o que estiver dentro da TAG BOX onde eu estou importando ele, vai renderizar aqui dentro-->
     <slot></slot>
   </div>
 </template>
@@ -15,7 +14,6 @@ export default defineComponent({
 
 <style scoped>
 .box {
-  background: darkgray;
-  color: black;
+  background: #faf0ca;
 }
 </style>

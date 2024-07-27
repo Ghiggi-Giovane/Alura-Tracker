@@ -1,31 +1,47 @@
 <template>
-  <div class="box formulario">
+  <div class="box">
     <div class="columns">
       <div
-        class="column is-8"
+        class="column is-5"
         role="form"
-        aria-label="Formulário para criação de uma nova tarefa"
+        aria-label="Formulário para iniciar uma nova tarefa"
       >
         <input
+          class="input"
           type="text"
-          class="input formulario2"
           placeholder="Qual tarefa você deseja iniciar?"
           v-model="descricao"
         />
       </div>
+      <div class="column is-3">
+        <div class="select">
+          <select v-model="idProjeto" class="selecioneprojeto">
+            <option value="">Selecione o projeto</option>
+            <option
+              :value="projeto.id"
+              v-for="projeto in projetos"
+              :key="projeto.id"
+            >
+              {{ projeto.nome }}
+            </option>
+          </select>
+        </div>
+      </div>
       <div class="column">
-        <Temporizador @aoTemporizadorFinalizado="finalizarTarefa" />
+        <Temporizador @aoFinalizarTarefa="salvarTarefa" />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { computed, defineComponent } from "vue";
 import Temporizador from "./Temporizador.vue";
+import { useStore } from "vuex";
+import { key } from "@/store";
 
 export default defineComponent({
-  name: "MeuFormulário",
+  name: "MeuFormulario",
   emits: ["aoSalvarTarefa"],
   components: {
     Temporizador,
@@ -33,26 +49,44 @@ export default defineComponent({
   data() {
     return {
       descricao: "",
+      idProjeto: "",
     };
   },
   methods: {
-    finalizarTarefa(tempoDecorrido: number): void {
+    salvarTarefa(tempoEmSegundos: number): void {
       this.$emit("aoSalvarTarefa", {
-        duracaoEmSegundos: tempoDecorrido,
+        duracaoEmSegundos: tempoEmSegundos,
         descricao: this.descricao,
+        projeto: this.projetos.find((proj) => proj.id == this.idProjeto),
       });
       this.descricao = "";
     },
+  },
+
+  setup() {
+    // Alem de importar a store para usar ela, precisa passar a key para passar a chave de acesso
+    const store = useStore(key);
+    return {
+      projetos: computed(() => store.state.projetos),
+    };
   },
 });
 </script>
 
 <style scoped>
-.formulario {
-  color: var(--texto-primario);
-  background-color: var(--bg-primario);
+.button {
+  margin-left: 8px;
 }
-.formulario2 {
-  border-color: var(--borda-primario);
+.box {
+  background-color: var(--bg-primario);
+  color: var(--texto-primario);
+}
+.input {
+  background-color: var(--bg-primario);
+  color: var(--texto-primario);
+}
+.selecioneprojeto {
+  background-color: var(--bg-primario);
+  color: var(--texto-primario);
 }
 </style>
